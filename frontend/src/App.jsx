@@ -1,35 +1,58 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-function App() {
-  const [count, setCount] = useState(0)
+import AuthProvider from './context/AuthContext';
+import PrivateRoute from './routes/PrivateRoute';
+import AdminRoute from './routes/AdminRoute';
 
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import Home from './pages/Home';
+import Products from './pages/Products';
+
+
+import Auth from './pages/Auth';
+import AdminDashboard from './pages/AdminDashboard';
+import Dashboard from './pages/Dashboard';
+import CategoryPage from './pages/CategoryPage';
+import ProductDetails from './pages/ProductDetails';
+import { CartProvider } from './context/CartContext';
+import Checkout from './pages/Checkout';
+import Conact from './pages/Conact';
+import About from './pages/About';
+
+export default function App() {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <AuthProvider>
+      <CartProvider>
+        <Router>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/treats" element={<Products />} />
+            <Route path="/auth" element={<Auth />} />
 
-export default App
+            {/* user pages */}
+            <Route path="/dashboard"
+              element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+
+            {/* admin-only */}
+            <Route path="/admin"
+              element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+
+            {/* fallback demo pages */}
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Conact />} />
+            <Route path="/category/:category" element={<CategoryPage />} />
+            <Route path="/products/:id" element={<ProductDetails />} />
+            <Route path='/checkout' element={<Checkout />} />
+          </Routes>
+          <Footer />
+          {/* global toasts */}
+          <ToastContainer position="top-left" newestOnTop />
+        </Router>
+      </CartProvider>
+    </AuthProvider>
+  );
+}
