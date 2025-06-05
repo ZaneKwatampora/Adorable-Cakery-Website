@@ -27,7 +27,7 @@
 
 ### Frontend
 - **React (Vite)**
-- **Tailwind CSS
+- **Tailwind CSS**
 - **React Router**
 - **Context API / Redux (optional)**
 
