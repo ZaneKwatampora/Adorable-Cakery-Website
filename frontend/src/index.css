@@ -35,3 +35,17 @@
     }
   }
 }
+
+
+@font-face{
+  font-family: Vibes;
+  src: url("../src/fonts/GreatVibes-Regular.ttf")
+}
+
+@theme{
+  --font-vibes: Vibes, "sans-serif"
+}
+
+.random{
+  font-family: 'Times New Roman', Times, serif;
+}

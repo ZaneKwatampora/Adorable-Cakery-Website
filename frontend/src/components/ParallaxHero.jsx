@@ -42,10 +42,10 @@ export default function ParallaxHero() {
                 style={{ y: yText }}
                 className="absolute bottom-10 text-center z-20"
             >
-                <h1 className="text-4xl md:text-5xl font-extrabold text-pink-500 mb-2">
+                <h1 className="text-7xl md:text-7xl font-vibes text-pink-500 mb-2">
                     Adorable Cakery
                 </h1>
-                <p className="text-lg font-NewYorkTimes flex space-x-1 pl-15">
+                <p className="text-3xl flex space-x-1 random pl-5">
                     {"Cakes made with love.".split("").map((char, i) => (
                         <span
                             key={i}
