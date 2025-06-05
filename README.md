@@ -27,7 +27,7 @@
 
 ### Frontend
 - **React (Vite)**
-- **Tailwind CSS / Bootstrap**
+- **Tailwind CSS
 - **React Router**
 - **Context API / Redux (optional)**
 
@@ -36,11 +36,9 @@
 - **Authentication:** JWT / Session
 - **Payment Gateways:**
   - M-Pesa Daraja API (sandbox/mock)
-- **Order Tracking:** WebSockets (planned or mocked)
 
 ### Database
 - **PostgreSQL**
-- **Redis + Celery** (for tasks like email, payment confirmation)
 
 ---
 
