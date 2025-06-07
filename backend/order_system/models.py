@@ -6,6 +6,7 @@ from django.core.validators import MinValueValidator
 from django.utils import timezone
 from decimal import Decimal
 
+
 class Order(models.Model):
     STATUS_CHOICES = [
         ('pending', 'Pending'),
@@ -30,6 +31,7 @@ class Order(models.Model):
     products = models.ManyToManyField(Product, through='OrderProduct')
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    order_id = models.CharField(max_length=20, unique=True, editable=False, blank=True)
     payment_method = models.CharField(max_length=20, choices=PAYMENT_METHODS)
     is_paid = models.BooleanField(default=False)
     paid_at = models.DateTimeField(null=True, blank=True)
@@ -70,7 +72,11 @@ class Order(models.Model):
         else:
             self.is_paid = False
             self.paid_at = None
-
+            
+        if not self.order_id:
+            now = timezone.now()
+            self.order_id = f"ORD-{now.strftime('%y%m%d-%H%M%S')}"
+            
         super().save(*args, **kwargs)
 
         if creating:

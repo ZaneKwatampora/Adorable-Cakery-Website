@@ -21,6 +21,9 @@ import { CartProvider } from './context/CartContext';
 import Checkout from './pages/Checkout';
 import Conact from './pages/Conact';
 import About from './pages/About';
+import CustomCakes from './pages/CustomCakes';
+import CakePage from './pages/CakePage';
+import Gallery from './pages/Gallery';
 
 export default function App() {
   return (
@@ -44,9 +47,12 @@ export default function App() {
             {/* fallback demo pages */}
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Conact />} />
+            <Route path='/category/cake' element={<CakePage />}/>
             <Route path="/category/:category" element={<CategoryPage />} />
             <Route path="/products/:id" element={<ProductDetails />} />
             <Route path='/checkout' element={<Checkout />} />
+            <Route path='/custom-cakes' element={<CustomCakes />}/>
+            <Route path='/gallery' element={<Gallery />}/>
           </Routes>
           <Footer />
           {/* global toasts */}

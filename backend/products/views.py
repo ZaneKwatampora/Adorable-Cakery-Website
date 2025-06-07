@@ -1,10 +1,10 @@
 # views.py
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, filters, generics, permissions, status
-from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from .models import *
 from .serializers import *
+from rest_framework.exceptions import ValidationError
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
@@ -16,16 +16,28 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-    search_fields = ['name', 'category__name']
+    search_fields = ['name', 'category__name', 'flavour__name']
     ordering_fields = ['price', 'created_at', 'kg']
-
+    
     def get_queryset(self):
         queryset = Product.objects.all().order_by('-created_at')
+
         category = self.request.query_params.get('category')
+        flavour = self.request.query_params.get('flavour')
+        is_special = self.request.query_params.get('is_special')
+
         if category and category.lower() != 'all':
             queryset = queryset.filter(category__name__iexact=category)
-        return queryset
 
+        if flavour and flavour.lower() != 'all':
+            queryset = queryset.filter(flavour__name__iexact=flavour)
+
+        if is_special is not None:
+            # Convert string to boolean
+            is_special_bool = is_special.lower() == 'true'
+            queryset = queryset.filter(is_special=is_special_bool)
+
+        return queryset
     def get_permissions(self):
         if self.action in ['create', 'update', 'partial_update', 'destroy']:
             return [permissions.IsAdminUser()]
@@ -48,7 +60,7 @@ class ProductVariantViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(product__id=product_id)
         return queryset
 
-from rest_framework.exceptions import ValidationError
+
 
 class ReviewListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = ReviewSerializer
@@ -76,3 +88,8 @@ class ReviewDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
         if self.request.user != self.get_object().user:
             raise permissions.PermissionDenied("You can only update your own review.")
         serializer.save()
+
+class FlavourViewSet(viewsets.ModelViewSet):
+    queryset = Flavour.objects.all()
+    serializer_class = FlavourSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]

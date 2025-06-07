@@ -47,12 +47,12 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = [
-            'id', 'user', 'order_items', 'total_price', 'status',
+            'id', 'order_id', 'user', 'order_items', 'total_price', 'status',
             'payment_method', 'delivery_method', 'is_paid',
             'paid_at', 'created_at', 'address'
         ]
         read_only_fields = [
-            'id', 'user', 'status', 'is_paid',
+            'id', 'order_id', 'user', 'status', 'is_paid',
             'paid_at', 'created_at', 'total_price'
         ]
 
@@ -68,8 +68,7 @@ class OrderSerializer(serializers.ModelSerializer):
             if not address:
                 raise serializers.ValidationError("Address is required for Uber delivery.")
         elif delivery_method == 'PICKUP':
-            # Optionally clear address
-            data['address'] = ''  # You can also choose to keep it if frontend uses it
+            data['address'] = ''
         else:
             raise serializers.ValidationError("Invalid delivery method.")
 

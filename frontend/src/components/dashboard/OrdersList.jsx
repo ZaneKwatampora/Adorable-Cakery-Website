@@ -53,14 +53,6 @@ const OrdersList = () => {
   const currentOrders = filteredOrders.slice(indexOfFirstOrder, indexOfLastOrder);
   const totalPages = Math.ceil(filteredOrders.length / ordersPerPage);
 
-  const handlePrev = () => {
-    if (currentPage > 1) setCurrentPage(prev => prev - 1);
-  };
-
-  const handleNext = () => {
-    if (currentPage < totalPages) setCurrentPage(prev => prev + 1);
-  };
-
   return (
     <div className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-xl shadow-lg">
       <h3 className="text-3xl font-bold mb-6 text-center text-pink-600">All Orders</h3>
@@ -92,6 +84,7 @@ const OrdersList = () => {
                 {getStatusLabel(order.status)}
               </span>
             </div>
+            <p className='text-gray-700'><span className='font-medium'>Order ID:</span> {order.order_id}</p>
             <p className="text-gray-700"><span className="font-medium">Total:</span> Ksh {order.total_price}</p>
             <p className="text-gray-700"><span className="font-medium">Date:</span> {new Date(order.created_at).toLocaleString()}</p>
             <div className="mt-3">
@@ -106,24 +99,22 @@ const OrdersList = () => {
         ))}
       </ul>
 
-      {/* Pagination Controls */}
+      {/* Numbered Pagination */}
       {totalPages > 1 && (
-        <div className="mt-8 flex justify-between items-center">
-          <button
-            onClick={handlePrev}
-            disabled={currentPage === 1}
-            className={`px-4 py-2 rounded-md text-white ${currentPage === 1 ? 'bg-gray-300 cursor-not-allowed' : 'bg-pink-500 hover:bg-pink-600'}`}
-          >
-            Previous
-          </button>
-          <span className="text-gray-700">Page {currentPage} of {totalPages}</span>
-          <button
-            onClick={handleNext}
-            disabled={currentPage === totalPages}
-            className={`px-4 py-2 rounded-md text-white ${currentPage === totalPages ? 'bg-gray-300 cursor-not-allowed' : 'bg-pink-500 hover:bg-pink-600'}`}
-          >
-            Next
-          </button>
+        <div className="mt-8 flex justify-center items-center space-x-2">
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index + 1}
+              onClick={() => setCurrentPage(index + 1)}
+              className={`px-4 py-2 rounded-md border transition ${
+                currentPage === index + 1
+                  ? 'bg-pink-500 text-white border-pink-500'
+                  : 'bg-white text-gray-700 border-gray-300 hover:bg-pink-100'
+              }`}
+            >
+              {index + 1}
+            </button>
+          ))}
         </div>
       )}
     </div>

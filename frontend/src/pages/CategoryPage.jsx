@@ -43,7 +43,7 @@ export default function CategoryPage() {
                     </span>
                 </Link>
 
-                <h1 className="text-2xl font-bold capitalize mt-4">{category} Products</h1>
+                <h1 className="text-2xl font-bold capitalize mt-4">{category} Treats</h1>
             </div>
 
             {/* Product Grid */}

@@ -1,5 +1,4 @@
-// src/components/CartIcon.js
-import React, { useState , useEffect, useRef} from 'react';
+import React, { useState , useEffect, useRef } from 'react';
 import { useCart } from '../context/CartContext';
 import Cart from './Cart';
 import { FaShoppingCart } from 'react-icons/fa'; 
@@ -25,11 +24,10 @@ export default function CartIcon() {
     }, [isCartOpen]);
 
     return (
-        <div className="relative">
+        <div className="relative group">
             <button
                 onClick={() => setIsCartOpen(!isCartOpen)}
                 className="hover:text-pink-400 relative"
-                title="Cart"
             >
                 <FaShoppingCart className="text-1.5xl" />
                 {cartCount > 0 && (
@@ -38,6 +36,12 @@ export default function CartIcon() {
                     </span>
                 )}
             </button>
+
+            {/* Hover Label */}
+            <div className="absolute left-1/2 transform -translate-x-1/2 mt-1 bg-pink-500 text-white text-sm px-3 py-1 rounded shadow opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10">
+                Cart
+            </div>
+
             {isCartOpen && <Cart onClose={() => setIsCartOpen(false)} />}
         </div>
     );

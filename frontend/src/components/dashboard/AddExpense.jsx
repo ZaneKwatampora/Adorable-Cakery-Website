@@ -1,5 +1,49 @@
 import React, { useState } from 'react';
 import axios from '../../services/axios';
+import { Loader, PlusCircle } from 'lucide-react';
+
+const InputField = ({ id, label, type = 'text', value, onChange, required }) => (
+  <div className="relative">
+    <input
+      id={id}
+      name={id}
+      type={type}
+      value={value}
+      onChange={onChange}
+      required={required}
+      className="peer w-full border border-gray-300 rounded-md px-3 pt-5 pb-2 text-sm outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-300 transition"
+      aria-labelledby={`${id}-label`}
+    />
+    <label
+      id={`${id}-label`}
+      htmlFor={id}
+      className="absolute left-3 top-2 text-xs text-gray-500 peer-focus:top-1 peer-focus:text-xs peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm transition-all pointer-events-none"
+    >
+      {label}
+    </label>
+  </div>
+);
+
+const TextAreaField = ({ id, label, value, onChange }) => (
+  <div className="relative">
+    <textarea
+      id={id}
+      name={id}
+      value={value}
+      onChange={onChange}
+      rows={3}
+      className="peer w-full border border-gray-300 rounded-md px-3 pt-5 pb-2 text-sm outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-300 transition resize-none"
+      aria-labelledby={`${id}-label`}
+    />
+    <label
+      id={`${id}-label`}
+      htmlFor={id}
+      className="absolute left-3 top-2 text-xs text-gray-500 peer-focus:top-1 peer-focus:text-xs peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm transition-all pointer-events-none"
+    >
+      {label}
+    </label>
+  </div>
+);
 
 const AddExpense = ({ refreshStats }) => {
   const [formData, setFormData] = useState({
@@ -13,9 +57,10 @@ const AddExpense = ({ refreshStats }) => {
   const [message, setMessage] = useState({ text: '', type: '' });
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: value,
     }));
   };
 
@@ -46,48 +91,48 @@ const AddExpense = ({ refreshStats }) => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-6 p-4 bg-white rounded shadow-sm">
-      <h3 className="text-xl font-bold mb-4 text-pink-400">Add New Expense</h3>
+    <div className="max-w-md mx-auto mt-8 p-6 bg-white/90 backdrop-blur rounded-2xl shadow-lg border border-pink-200 animate-fade-in">
+      <h3 className="text-2xl font-bold mb-6 text-pink-500 flex items-center gap-2">
+        <PlusCircle className="w-6 h-6" />
+        Add New Expense
+      </h3>
 
-      <div className="space-y-3">
-        <input
-          name="title"
-          placeholder="e.g. Flour purchase"
+      <div className="space-y-5">
+        <InputField
+          id="title"
+          label="Expense Title"
           value={formData.title}
           onChange={handleChange}
-          className="w-full border rounded px-3 py-2"
+          required
         />
-
-        <input
-          name="amount"
+        <InputField
+          id="amount"
+          label="Amount (e.g. 500)"
           type="number"
-          placeholder="Amount (e.g. 500)"
           value={formData.amount}
           onChange={handleChange}
-          className="w-full border rounded px-3 py-2"
+          required
         />
-
-        <input
-          name="category"
-          placeholder="e.g. Ingredients / Packaging"
+        <InputField
+          id="category"
+          label="Category (e.g. Ingredients)"
           value={formData.category}
           onChange={handleChange}
-          className="w-full border rounded px-3 py-2"
+          required
         />
-
-        <textarea
-          name="notes"
-          placeholder="Optional notes (e.g. bought from XYZ vendor)"
+        <TextAreaField
+          id="notes"
+          label="Optional Notes"
           value={formData.notes}
           onChange={handleChange}
-          className="w-full border rounded px-3 py-2"
-          rows={3}
         />
 
         {message.text && (
           <div
-            className={`text-sm p-2 rounded ${
-              message.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+            className={`text-sm px-4 py-2 rounded-md transition ${
+              message.type === 'success'
+                ? 'bg-green-100 text-green-700 border border-green-200'
+                : 'bg-red-100 text-red-700 border border-red-200'
             }`}
           >
             {message.text}
@@ -97,13 +142,23 @@ const AddExpense = ({ refreshStats }) => {
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className={`w-full py-2 rounded text-white transition ${
+          className={`w-full flex items-center justify-center gap-2 py-2 px-4 rounded-md text-white font-semibold transition-all duration-200 ${
             loading
               ? 'bg-pink-400 cursor-not-allowed'
               : 'bg-pink-600 hover:bg-pink-700'
           }`}
         >
-          {loading ? 'Adding...' : 'Add Expense'}
+          {loading ? (
+            <>
+              <Loader className="w-4 h-4 animate-spin" />
+              Adding...
+            </>
+          ) : (
+            <>
+              <PlusCircle className="w-4 h-4" />
+              Add Expense
+            </>
+          )}
         </button>
       </div>
     </div>

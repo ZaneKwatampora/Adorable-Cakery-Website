@@ -83,9 +83,9 @@ export default function Dashboard() {
                     ) : (
                         <div className="space-y-4">
                             {orders.map(order => (
-                                <div key={order.id} className="border border-gray-200 rounded-lg p-4">
+                                <div key={order.order_id} className="border border-gray-200 rounded-lg p-4">
                                     <div className="flex justify-between items-center mb-2">
-                                        <span className="text-sm text-gray-500">Order ID: {order.id}</span>
+                                        <span className="text-sm text-gray-500">Order ID: {order.order_id}</span>
                                         <span
                                             className={`text-xs font-semibold px-2 py-1 rounded ${statusColors[order.status] || 'bg-gray-100 text-gray-700'}`}
                                         >

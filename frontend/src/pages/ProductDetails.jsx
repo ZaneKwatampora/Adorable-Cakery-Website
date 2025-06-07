@@ -114,8 +114,7 @@ export default function ProductDetails() {
                 cancelButtonText: 'Continue Browsing'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Redirect to login page - adjust this path based on your routing
-                    window.location.href = '/login';
+                    window.location.href = '/auth';
                 }
             });
             return;

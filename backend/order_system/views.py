@@ -76,7 +76,7 @@ Hi {user.full_name},
 
 Thank you for your order at Adorable Cakery! 🎂
 
-Order ID: {order.id}
+Order ID: {order.order_id}
 Date: {order.created_at.strftime('%Y-%m-%d %H:%M')}
 Payment Method: {order.payment_method}
 Status: {order.status}
@@ -100,7 +100,7 @@ Phone: {user.phone}
 Email: {user.email}
 Address: {order.address}
 
-Order ID: {order.id}
+Order ID: {order.order_id}
 Date: {order.created_at.strftime('%Y-%m-%d %H:%M')}
 Payment Method: {order.payment_method}
 Status: {order.status}
@@ -142,7 +142,7 @@ class OrderStatusUpdateView(generics.UpdateAPIView):
         ])
 
         message = f"""
-Your order #{order.id} placed on {order.created_at.strftime('%Y-%m-%d %H:%M')} has been updated.
+Your order #{order.order_id} placed on {order.created_at.strftime('%Y-%m-%d %H:%M')} has been updated.
 
 Items:
 {product_lines}
@@ -204,11 +204,11 @@ class BulkOrderStatusUpdateView(APIView):
             ])
 
             msg = f"""
-Order #{order.id} ({order.created_at.strftime('%Y-%m-%d %H:%M')})
-Items:
-{product_lines}
-Previous Status: {old_status}
-New Status: {new_status}
+                Order #{order.order_id} ({order.created_at.strftime('%Y-%m-%d %H:%M')})
+                Items:
+                {product_lines}
+                Previous Status: {old_status}
+                New Status: {new_status}
             """.strip()
 
             user_notifications[order.user].append(msg)
@@ -220,13 +220,13 @@ New Status: {new_status}
             create_order_notification(user, "Order Status Updates", full_msg)
 
             email_message = f"""
-Hi {user.full_name},
+                Hi {user.full_name},
 
-The status of your recent orders has changed:
+                The status of your recent orders has changed:
 
-{full_msg}
+                {full_msg}
 
-Thanks for shopping with Adorable Cakery! 🎂
+                Thanks for shopping with Adorable Cakery! 🎂
             """.strip()
 
             send_order_email(user, "Multiple Order Updates – Adorable Cakery", email_message)

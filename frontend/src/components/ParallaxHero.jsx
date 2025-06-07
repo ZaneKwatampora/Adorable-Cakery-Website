@@ -1,7 +1,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 
-import logo from '../assets/logo.png';
+import logo from '../assets/aclogo.png';
 import sprinkles from '../assets/sprinkles.png';
 
 export default function ParallaxHero() {

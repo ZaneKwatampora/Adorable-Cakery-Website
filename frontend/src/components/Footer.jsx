@@ -49,6 +49,14 @@ export default function Footer() {
                                 About Us
                             </a>
                         </li>
+                        <li>
+                            <a
+                                href="/gallery"
+                                className="hover:text-pink-400 transition"
+                            >
+                                Gallery
+                            </a>
+                        </li>
                     </ul>
                 </nav>
 

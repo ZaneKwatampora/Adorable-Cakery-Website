@@ -6,9 +6,10 @@ router = DefaultRouter()
 router.register('categories', CategoryViewSet)
 router.register('products', ProductViewSet)
 router.register('variants', ProductVariantViewSet)
+router.register('flavours', FlavourViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
     path('products/<int:product_id>/reviews/', ReviewListCreateAPIView.as_view(), name='product-reviews'),
-    path('reviews/<int:pk>/', ReviewDetailAPIView.as_view(), name='review-detail'),  # admin view/delete
+    path('reviews/<int:pk>/', ReviewDetailAPIView.as_view(), name='review-detail'),
 ]

@@ -1,8 +1,18 @@
-// src/api/products.js
 import axiosInstance from '../services/axios';
 
-export async function fetchProducts(category = 'all') {
-  const params = category !== 'all' ? { category } : {};
+export async function fetchProducts(input = 'all') {
+  let params = {};
+  if (typeof input === 'string') {
+    if (input !== 'all') {
+      params.category = input;
+    }
+  }
+
+  // If input is an object (new usage), use it as-is
+  if (typeof input === 'object') {
+    params = input;
+  }
+
   const res = await axiosInstance.get('/api/products/', { params });
   return res.data;
 }

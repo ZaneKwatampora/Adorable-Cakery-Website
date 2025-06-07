@@ -5,22 +5,19 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Swal from 'sweetalert2';
 
-import loginImg    from '../assets/cake-login.jpg';
-import registerImg from '../assets/cake-register.jpg';
+import loginImg from '../assets/cake-login.jpg';
+import registerImg from '../assets/register.png';
 
 export default function Auth() {
-  /* ========== state ========== */
   const [isLogin, setIsLogin] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const [loginForm, setLoginForm] = useState({ full_name: '', password: '' });
-  const [regForm,   setRegForm]   = useState({
-    full_name: '', password: '', email: '', phone: ''
-  });
+  const [regForm, setRegForm] = useState({ full_name: '', password: '', email: '', phone: '' });
 
   const { loginUser } = useContext(AuthContext);
-  const navigate      = useNavigate();
+  const navigate = useNavigate();
 
-  /* ========== helpers ========== */
   const toggleForm = () => setIsLogin(p => !p);
 
   const bind = (state, set) => (field) => ({
@@ -29,31 +26,34 @@ export default function Auth() {
   });
 
   const L = bind(loginForm, setLoginForm);
-  const R = bind(regForm,   setRegForm);
+  const R = bind(regForm, setRegForm);
 
-  /* ========== actions ========== */
   const handleLogin = async e => {
     e.preventDefault();
+    setLoading(true);
     try {
       await loginUser(loginForm.full_name, loginForm.password);
       navigate('/');
     } catch (err) {
       const errorMsg = err.response?.data?.error || 'Wrong name or password';
-      Swal.fire({ icon:'error', title:'Login failed', text: errorMsg });
+      Swal.fire({ icon: 'error', title: 'Login failed', text: errorMsg });
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleRegister = async e => {
     e.preventDefault();
+    setLoading(true);
     try {
-      const username = regForm.full_name.replace(/\s+/g,'').toLowerCase() || regForm.email;
+      const username = regForm.full_name.replace(/\s+/g, '').toLowerCase() || regForm.email;
       await axios.post('/api/register/', { ...regForm, username });
 
       Swal.fire({
-        icon:'success',
-        title:'Almost done!',
-        html:'Check inbox <b>and</b> spam for the confirmation email.',
-        confirmButtonColor:'#e91e63'
+        icon: 'success',
+        title: 'Almost done!',
+        html: 'Check inbox <b>and</b> spam for the confirmation email.',
+        confirmButtonColor: '#e91e63'
       }).then(toggleForm);
     } catch (err) {
       Swal.fire({
@@ -61,10 +61,11 @@ export default function Auth() {
         title: 'Registration failed',
         text: err.response?.data?.error || 'Please try again'
       });
+    } finally {
+      setLoading(false);
     }
   };
 
-  /* ========== UI ========== */
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#f8f0f5] px-4">
       <motion.div
@@ -78,7 +79,7 @@ export default function Auth() {
           <img
             src={isLogin ? loginImg : registerImg}
             alt="Adorable Cakery"
-            className="h-full w-full object-cover"
+            className="h-full w-full object-contain"
           />
         </motion.div>
 
@@ -93,8 +94,15 @@ export default function Auth() {
                   className="w-full rounded-lg border px-4 py-3 focus:ring-pink-400" required />
                 <input {...L('password')} placeholder="Password" type="password"
                   className="w-full rounded-lg border px-4 py-3 focus:ring-pink-400" required />
-                <button className="w-full py-3 rounded-lg bg-pink-500 hover:bg-pink-600 text-white font-semibold">
-                  Log In
+
+                <button
+                  className="w-full py-3 rounded-lg bg-pink-500 hover:bg-pink-600 text-white font-semibold flex items-center justify-center gap-2"
+                  disabled={loading}
+                >
+                  {loading && (
+                    <span className="animate-spin rounded-full border-2 border-white border-t-transparent w-5 h-5"></span>
+                  )}
+                  {loading ? 'Logging in...' : 'Log In'}
                 </button>
               </form>
 
@@ -118,8 +126,15 @@ export default function Auth() {
                   className="w-full rounded-lg border px-4 py-3 focus:ring-pink-400" required />
                 <input {...R('password')} placeholder="Password" type="password"
                   className="w-full rounded-lg border px-4 py-3 focus:ring-pink-400" required />
-                <button className="w-full py-3 rounded-lg bg-pink-500 hover:bg-pink-600 text-white font-semibold">
-                  Sign Up
+
+                <button
+                  className="w-full py-3 rounded-lg bg-pink-500 hover:bg-pink-600 text-white font-semibold flex items-center justify-center gap-2"
+                  disabled={loading}
+                >
+                  {loading && (
+                    <span className="animate-spin rounded-full border-2 border-white border-t-transparent w-5 h-5"></span>
+                  )}
+                  {loading ? 'Signing up...' : 'Sign Up'}
                 </button>
               </form>
 

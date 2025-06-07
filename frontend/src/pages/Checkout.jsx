@@ -155,7 +155,6 @@ export default function Checkout() {
                     >
                         <option value="">-- Select --</option>
                         <option value="mpesa">M-Pesa</option>
-                        <option value="paypal">PayPal</option>
                         <option value="cod">Cash on Delivery</option>
                     </select>
                 </div>

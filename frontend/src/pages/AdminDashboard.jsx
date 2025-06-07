@@ -8,6 +8,7 @@ import {
   Users,
   ShieldCheck,
   User,
+  Package
 } from 'lucide-react';
 
 import OrdersList from '../components/dashboard/OrdersList';
@@ -17,6 +18,9 @@ import ExpensesList from '../components/dashboard/ExpensesList';
 import AddExpense from '../components/dashboard/AddExpense';
 import ProfitChart from '../components/dashboard/ProfitChart';
 import UserList from '../components/dashboard/UserList';
+import ProductManager from '../components/dashboard/ProductManager';
+import ManageProducts from '../components/dashboard/MangeProducts';
+
 
 const NON_CLICKABLE_STATS = ['Admins', 'Regular Users', 'Total Sales'];
 
@@ -69,14 +73,22 @@ const STAT_DETAILS = {
       { label: 'Engagement', component: <p>User engagement metrics.</p> },
     ],
   },
+  Products: {
+    icon: Package,
+    navItems: [
+      { label: 'Manage Products', component: <ManageProducts />},
+      { label: 'Add Products', component: <ProductManager />}
+    ],
+  },
 };
+
 const StatCard = ({ title, value, icon: Icon, color, onClick, selected, isClickable }) => (
   <div
     onClick={isClickable ? onClick : undefined}
     className={`bg-white border rounded-2xl p-6 shadow-sm flex justify-between items-center 
       transition-transform duration-300 ease-in-out 
       ${isClickable ? 'cursor-pointer hover:shadow-lg hover:-translate-y-1' : 'cursor-not-allowed opacity-70'} 
-      ${selected ? 'ring-2 ring-blue-500' : ''}`}
+      ${selected ? 'ring-2 ring-gray-500' : ''}`}
   >
     <div>
       <h3 className="text-sm text-gray-500 font-semibold uppercase tracking-wide">{title}</h3>
@@ -112,13 +124,14 @@ const AdminDashboard = () => {
   }, []);
 
   const statCards = stats && [
+    { title: 'Products', value: stats.total_products || '...', color: 'bg-pink-500 text-pink-600' },
     { title: 'Total Orders', value: stats.total_orders, color: 'bg-blue-500 text-blue-600' },
     { title: 'Expenses', value: `Ksh ${stats.total_expenses}`, color: 'bg-yellow-500 text-yellow-600' },
     { title: 'Profit', value: `Ksh ${stats.profit}`, color: 'bg-purple-500 text-purple-600' },
     { title: 'Total Users', value: stats.total_users, color: 'bg-cyan-500 text-cyan-600' },
     { title: 'Admins', value: stats.total_admins, color: 'bg-red-500 text-red-600' },
     { title: 'Regular Users', value: stats.total_regular_users, color: 'bg-orange-500 text-orange-600' },
-    { title: 'Total Sales', value: `Ksh ${stats.total_sales}`, color: 'bg-green-500 text-green-600' },
+    { title: 'Total Sales', value: `Ksh ${stats.total_sales}`, color: 'bg-green-500 text-green-600' },,
   ];
 
   if (loading) return <p className="text-center text-lg text-gray-600 mt-20">Loading dashboard...</p>;
@@ -166,7 +179,7 @@ const AdminDashboard = () => {
                 setSelectedStat(null);
                 setActiveTabIndex(0);
               }}
-              className="text-sm text-blue-500 hover:underline hover:text-blue-600 transition-colors"
+              className="text-sm text-pink-500 hover:underline hover:text-pink-600 transition-colors"
             >
               ← Back
             </button>
@@ -179,8 +192,8 @@ const AdminDashboard = () => {
                 onClick={() => setActiveTabIndex(index)}
                 className={`px-4 py-1.5 text-sm rounded-full transition-all font-medium
                   ${index === activeTabIndex
-                    ? 'bg-blue-600 text-white shadow-md'
-                    : 'bg-gray-100 text-gray-700 hover:bg-blue-100 hover:text-blue-700'}
+                    ? 'bg-pink-600 text-white shadow-md'
+                    : 'bg-gray-100 text-gray-700 hover:bg-pink-100 hover:text-pink-700'}
                 `}
               >
                 {item.label}
