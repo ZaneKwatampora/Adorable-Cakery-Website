@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import image1 from "../assets/cake1.jpg";
-import image2 from "../assets/cake2.jpg";
-import image3 from "../assets/cake3.jpg";
-import image4 from "../assets/cake4.jpg";
-import image5 from "../assets/cake5.jpg";
+import image1 from "../assets/instacake1.png";
+import image2 from "../assets/instacake2.png";
+import image3 from "../assets/instacake3.png";
+import image4 from "../assets/instacake4.png";
+import image5 from "../assets/instacake5.png";
 
 const galleryItems = [
   {
@@ -37,8 +37,8 @@ const galleryItems = [
   },
   {
     id: 5,
-    name: 'Seasonal Fruit Tart',
-    description: 'A crisp pastry shell filled with creamy custard and topped with fresh seasonal fruits.',
+    name: 'Spiderman cake',
+    description: "'Everyone keeps telling me how my story is supposed to go. Nah. I'm-a do my own thing.' - Miles Morales.",
     imgSrc: image5,
     alt: 'Seasonal Fruit Tart',
   },

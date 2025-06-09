@@ -16,11 +16,11 @@ export default function CakePage() {
                 let query = {};
 
                 if (selectedFlavour === 'all') {
-                    query = { category: 'cake' };
+                    query = { category: 'cakes' };
                 } else if (selectedFlavour === 'special') {
-                    query = { category: 'cake', is_special: true };
+                    query = { category: 'cakes', is_special: true };
                 } else {
-                    query = { category: 'cake', flavour: selectedFlavour };
+                    query = { category: 'cakes', flavour: selectedFlavour };
                 }
 
                 const data = await fetchProducts(query);

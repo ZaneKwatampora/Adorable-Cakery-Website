@@ -115,20 +115,24 @@ const ProductForm = ({ onSuccess }) => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 p-6 bg-white/90 backdrop-blur border border-pink-200 rounded-2xl shadow-md animate-fade-in">
+    <div className="max-w-3xl mx-auto mt-10 p-6 bg-white/90 backdrop-blur border border-pink-200 rounded-2xl shadow-md animate-fade-in
+                    sm:p-8
+                    ">
       <h3 className="text-2xl font-bold mb-6 text-pink-600 text-center">Add New Product</h3>
 
       {message.text && (
-        <div className={`mb-4 text-sm px-4 py-2 rounded-md border transition ${
-          message.type === 'success'
-            ? 'bg-green-100 text-green-700 border-green-200'
-            : 'bg-red-100 text-red-700 border-red-200'
-        }`}>
+        <div
+          className={`mb-4 text-sm px-4 py-2 rounded-md border transition ${
+            message.type === 'success'
+              ? 'bg-green-100 text-green-700 border-green-200'
+              : 'bg-red-100 text-red-700 border-red-200'
+          }`}
+        >
           {message.text}
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-6">
         {/* Product Name */}
         <div className="relative">
           <input
@@ -151,7 +155,7 @@ const ProductForm = ({ onSuccess }) => {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             disabled={loading}
-            className="peer w-full border rounded-md px-3 pt-5 pb-2 text-sm outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-300 placeholder-transparent"
+            className="peer w-full border rounded-md px-3 pt-5 pb-2 text-sm outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-300 placeholder-transparent resize-none min-h-[80px]"
             placeholder="Description"
           />
           <label className="absolute left-3 top-2 text-xs text-gray-500 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:top-2 peer-focus:text-xs">
@@ -164,7 +168,7 @@ const ProductForm = ({ onSuccess }) => {
           <label htmlFor="image-upload" className="block text-sm font-medium text-gray-700 mb-2">
             Product Image
           </label>
-          <div className="border-2 border-dashed border-pink-300 rounded-lg p-4 text-center relative hover:bg-pink-50 transition">
+          <div className="border-2 border-dashed border-pink-300 rounded-lg p-4 text-center relative hover:bg-pink-50 transition cursor-pointer">
             <input
               id="image-upload"
               type="file"
@@ -179,100 +183,128 @@ const ProductForm = ({ onSuccess }) => {
             ) : (
               <div className="flex flex-col items-center justify-center text-pink-500">
                 <ImagePlus className="w-8 h-8 mb-1" />
-                <p className="text-sm">Click to upload or drag an image</p>
+                <p className="text-sm select-none">Click to upload or drag an image</p>
               </div>
             )}
           </div>
         </div>
 
-        {/* Category Select */}
-        <div className="relative">
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className="peer w-full appearance-none border rounded-md px-3 pt-5 pb-2 pr-10 text-sm focus:border-pink-500 focus:ring-1 focus:ring-pink-300"
-            required
-          >
-            <option value="" disabled hidden />
-            {categories.map((c) => (
-              <option key={c.id} value={c.name}>{c.name}</option>
-            ))}
-          </select>
-          <label className="absolute left-3 top-2 text-xs text-gray-500 transition-all peer-focus:top-2 peer-focus:text-xs">
-            Select Category
-          </label>
-          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4 pointer-events-none" />
-        </div>
+        {/* Category & Flavour - Responsive Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {/* Category Select */}
+          <div className="relative z-20">
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="peer w-full appearance-none border rounded-md px-3 pt-5 pb-2 pr-10 text-sm focus:border-pink-500 focus:ring-1 focus:ring-pink-300"
+              required
+            >
+              <option value="" disabled hidden />
+              {categories.map((c) => (
+                <option key={c.id} value={c.name}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+            <label className="absolute left-3 top-2 text-xs text-gray-500 transition-all peer-focus:top-2 peer-focus:text-xs">
+              Select Category
+            </label>
+            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4 pointer-events-none" />
+          </div>
 
-        {/* Flavour Select */}
-        <div className="relative">
-          <select
-            value={flavour}
-            onChange={(e) => setFlavour(e.target.value)}
-            className="peer w-full appearance-none border rounded-md px-3 pt-5 pb-2 pr-10 text-sm focus:border-pink-500 focus:ring-1 focus:ring-pink-300"
-            required
-          >
-            <option value="" disabled hidden />
-            {flavours.map((f) => (
-              <option key={f.id} value={f.name}>{f.name}</option>
-            ))}
-          </select>
-          <label className="absolute left-3 top-2 text-xs text-gray-500 transition-all peer-focus:top-2 peer-focus:text-xs">
-            Select Flavour
-          </label>
-          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4 pointer-events-none" />
+          {/* Flavour Select */}
+          <div className="relative z-20">
+            <select
+              value={flavour}
+              onChange={(e) => setFlavour(e.target.value)}
+              className="peer w-full appearance-none border rounded-md px-3 pt-5 pb-2 pr-10 text-sm focus:border-pink-500 focus:ring-1 focus:ring-pink-300"
+              required
+            >
+              <option value="" disabled hidden />
+              {flavours.map((f) => (
+                <option key={f.id} value={f.name}>
+                  {f.name}
+                </option>
+              ))}
+            </select>
+            <label className="absolute left-3 top-2 text-xs text-gray-500 transition-all peer-focus:top-2 peer-focus:text-xs">
+              Select Flavour
+            </label>
+            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4 pointer-events-none" />
+          </div>
         </div>
 
         {/* Is Special */}
-        <div className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            checked={isSpecial}
-            onChange={(e) => setIsSpecial(e.target.checked)}
-            className="accent-pink-600"
-          />
-          <label className="text-sm">Mark as Special Product</label>
+        <div className="flex items-center gap-3">
+          <label className="relative inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              checked={isSpecial}
+              onChange={(e) => setIsSpecial(e.target.checked)}
+              className="sr-only peer"
+            />
+            <div
+              className="w-9 h-5 bg-pink-300 rounded-full peer peer-checked:bg-pink-600
+                        after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:border-gray-300
+                        after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-full peer-checked:after:border-white
+                        relative"
+            ></div>
+          </label>
+          <span className="text-sm select-none">Mark as Special Product</span>
         </div>
 
         {/* Variants */}
         <div>
-          <label className="block mb-2 font-medium text-sm text-gray-600">Variants (KG & Price)</label>
-          <div className="grid grid-cols-2 gap-4">
+          <label className="block mb-3 font-medium text-sm text-gray-700">Select KG & Set Price</label>
+          <div
+            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-h-60 overflow-y-auto
+                      border border-pink-300 rounded-md p-3"
+          >
             {KG_OPTIONS.map((kg) => (
-              <div key={kg} className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={kg in variants}
-                  onChange={(e) => handleVariantChange(kg, e.target.checked)}
-                  disabled={loading}
-                  className='accent-pink-600'
-                />
-                <span className="text-sm">{kg} kg</span>
-                <input
-                  type="number"
-                  value={variants[kg] ?? ''}
-                  onChange={(e) => handlePriceChange(kg, e.target.value)}
-                  placeholder="Price"
-                  disabled={!Object.hasOwn(variants, kg)}
-                  className="flex-1 px-2 py-1 border rounded-md text-sm"
-                  min="0"
-                  step="0.01"
-                />
+              <div key={kg} className="flex flex-col items-center gap-1">
+                <label className="inline-flex items-center cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={variants.hasOwnProperty(kg)}
+                    onChange={(e) => handleVariantChange(kg, e.target.checked)}
+                    className="peer sr-only"
+                    disabled={loading}
+                  />
+                  <span
+                    className="w-5 h-5 flex justify-center items-center rounded-md border border-pink-300
+                               peer-checked:bg-pink-600 peer-checked:border-pink-600
+                               transition-colors"
+                  >
+                    ✓
+                  </span>
+                  <span className="ml-2 text-sm">{kg} kg</span>
+                </label>
+
+                {variants.hasOwnProperty(kg) && (
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={variants[kg]}
+                    onChange={(e) => handlePriceChange(kg, e.target.value)}
+                    placeholder="Price (ksh)"
+                    className="w-full text-center text-sm rounded-md border border-pink-300 px-2 py-1 focus:outline-none focus:ring-1 focus:ring-pink-500 focus:border-pink-500"
+                    disabled={loading}
+                  />
+                )}
               </div>
             ))}
           </div>
         </div>
 
-        {/* Submit */}
+        {/* Submit Button */}
         <button
           type="submit"
           disabled={loading}
-          className={`w-full flex justify-center items-center gap-2 py-2 px-4 rounded-md text-white font-semibold ${
-            loading ? 'bg-pink-400 cursor-not-allowed' : 'bg-pink-600 hover:bg-pink-700'
-          } transition`}
+          className="w-full bg-pink-600 hover:bg-pink-700 disabled:bg-pink-400 text-white font-semibold rounded-md py-2 flex justify-center items-center gap-2 transition"
         >
-          {loading && <Loader className="animate-spin w-4 h-4" />}
-          {loading ? 'Adding...' : 'Add Product'}
+          {loading && <Loader className="animate-spin h-5 w-5" />}
+          {loading ? 'Submitting...' : 'Add Product'}
         </button>
       </form>
     </div>
